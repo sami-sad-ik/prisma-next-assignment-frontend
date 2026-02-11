@@ -63,14 +63,14 @@ const Navbar = ({
     url: "https://www.shadcnblocks.com",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
-    title: "Shadcnblocks.com",
+    title: "SkillBridge",
   },
   menu = [
     { title: "Home", url: "/" },
     {
       title: "Tutors",
       url: "/tutors",
-    }
+    },
   ],
   auth = {
     login: { title: "Login", url: "#" },
@@ -87,8 +87,8 @@ const Navbar = ({
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
               <Image
-              width={32}
-              height={32}
+                width={32}
+                height={32}
                 src={logo.src}
                 className="max-h-8 dark:invert"
                 alt={logo.alt}
@@ -121,8 +121,8 @@ const Navbar = ({
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
               <Image
-               width={32}
-              height={32}
+                width={32}
+                height={32}
                 src={logo.src}
                 className="max-h-8 dark:invert"
                 alt={logo.alt}
@@ -139,8 +139,8 @@ const Navbar = ({
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2">
                       <Image
-                       width={32}
-                      height={32}
+                        width={32}
+                        height={32}
                         src={logo.src}
                         className="max-h-8 dark:invert"
                         alt={logo.alt}
@@ -152,8 +152,7 @@ const Navbar = ({
                   <Accordion
                     type="single"
                     collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
+                    className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
@@ -195,8 +194,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
+        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground">
         {item.title}
       </NavigationMenuLink>
     </NavigationMenuItem>
@@ -230,8 +228,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
   return (
     <a
       className="flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
-      href={item.url}
-    >
+      href={item.url}>
       <div className="text-foreground">{item.icon}</div>
       <div>
         <div className="text-sm font-semibold">{item.title}</div>

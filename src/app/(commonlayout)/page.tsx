@@ -1,18 +1,25 @@
-import { Button } from "@/components/ui/button"
+import { TutorCard } from "@/components/TutorCard";
+import { tutorService } from "../modules/tutor.service";
 
-export function ButtonDemo() {
-  return (
-    <div className="flex flex-wrap items-center gap-2 md:flex-row">
-      <Button variant="outline">Button</Button>
-    
-    </div>
-  )
+export interface Tutor {
+  id: string;
+  name: string;
+  bio: string;
+  hourlyRate: number;
+  avgRating: number;
+  totalReviews: number;
 }
 
-export default function Home() {
+export default async function Home() {
+  const featuredTutors = await tutorService.getFeaturedTutors();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <Button variant="outline">Outline</Button>
+    <div className=" bg-zinc-50 font-sans dark:bg-black">
+      <div className="my-5">
+        {featuredTutors.data.map((tutor: Tutor) => (
+          <TutorCard key={tutor.id} tutor={tutor} showFeaturedBadge={true} />
+        ))}
+      </div>
     </div>
   );
 }
