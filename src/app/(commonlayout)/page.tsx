@@ -1,6 +1,5 @@
 import { TutorCard } from "@/components/TutorCard";
 import { tutorService } from "../modules/tutor.service";
-import { authClient } from "@/lib/auth/auth-client";
 
 export interface Tutor {
   id: string;
@@ -13,11 +12,9 @@ export interface Tutor {
 
 export default async function Home() {
   const featuredTutors = await tutorService.getFeaturedTutors();
-  const session = await authClient.getSession();
-  console.log(session);
 
   return (
-    <div className=" bg-zinc-50 font-sans dark:bg-black">
+    <div className="  font-sans dark:bg-black">
       <div className="my-5">
         {featuredTutors.data.map((tutor: Tutor) => (
           <TutorCard key={tutor.id} tutor={tutor} showFeaturedBadge={true} />

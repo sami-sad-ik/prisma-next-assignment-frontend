@@ -28,6 +28,17 @@ import {
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth/auth-client";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface MenuItem {
   title: string;
@@ -79,6 +90,22 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const dashboardMenu = session
+    ? [{ title: "Dashboard", url: "/dashboard" }]
+    : [];
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          // router.push("/login"); // Redirect after logout
+          router.refresh();
+        },
+      },
+    });
+  };
   return (
     <section className={cn("py-4 ", className)}>
       <div className="container w-10/12 mx-auto">
@@ -101,18 +128,61 @@ const Navbar = ({
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
+                  {/* 1. Standard Menu Items */}
                   {menu.map((item) => renderMenuItem(item))}
+                </NavigationMenuList>
+
+                {/* 2. Optional Dashboard Route */}
+                <NavigationMenuList>
+                  {/* 1. Standard Menu Items */}
+                  {dashboardMenu.map((item) => renderMenuItem(item))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <Link href={auth.login.url}>{auth.login.title}</Link>
-            </Button>
-            <Button asChild size="sm">
-              <Link href={auth.signup.url}>{auth.signup.title}</Link>
-            </Button>
+            {isPending ? (
+              <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
+            ) : session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage
+                        src={session.user.image || ""}
+                        alt={session.user.name}
+                      />
+                      <AvatarFallback>
+                        {session.user.name?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem> */}
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-destructive">
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex gap-2">
+                <Button variant="ghost" asChild>
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
+                </Button>
+                <Button asChild>
+                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </nav>
 
@@ -156,14 +226,58 @@ const Navbar = ({
                     className="flex w-full flex-col gap-4">
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="flex w-full flex-col gap-4">
+                    {dashboardMenu.map((item) => renderMobileMenuItem(item))}
+                  </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <Link href={auth.login.url}>{auth.login.title}</Link>
-                    </Button>
-                    <Button asChild>
-                      <Link href={auth.signup.url}>{auth.signup.title}</Link>
-                    </Button>
+                    {isPending ? (
+                      <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
+                    ) : session ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="relative h-8 w-8 rounded-full">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage
+                                src={session.user.image || ""}
+                                alt={session.user.name}
+                              />
+                              <AvatarFallback>
+                                {session.user.name?.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {/* <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem> */}
+                          <DropdownMenuItem
+                            onClick={handleLogout}
+                            className="text-destructive">
+                            Log out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Button variant="ghost" asChild>
+                          <Link href={auth.login.url}>{auth.login.title}</Link>
+                        </Button>
+                        <Button asChild>
+                          <Link href={auth.signup.url}>
+                            {auth.signup.title}
+                          </Link>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </SheetContent>

@@ -37,6 +37,7 @@ export function LoginForm({
       {
         email,
         password,
+        callbackURL: "/",
       },
       {
         onRequest: () => {
