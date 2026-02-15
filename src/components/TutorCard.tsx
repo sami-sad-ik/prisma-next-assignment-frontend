@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import Link from "next/link";
 
 export function TutorCard({
   tutor,
@@ -17,7 +18,7 @@ export function TutorCard({
   tutor: Tutor;
   showFeaturedBadge: boolean;
 }) {
-  const { name, avgRating, totalReviews } = tutor;
+  const { id, name, avgRating, totalReviews } = tutor;
   return (
     <Card className="w-full max-w-sm ">
       <CardHeader>
@@ -34,7 +35,9 @@ export function TutorCard({
         </div>
       </CardHeader>
       <CardFooter>
-        <Button className="w-full">View Tutor details</Button>
+        <Button asChild className="w-full">
+          <Link href={`/tutors/${id}`}>View Tutor details</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

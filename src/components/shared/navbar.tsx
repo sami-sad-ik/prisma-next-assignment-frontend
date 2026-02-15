@@ -39,6 +39,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { BecomeTutorModal } from "../BecomeTutorModal";
 
 interface MenuItem {
   title: string;
@@ -92,6 +93,7 @@ const Navbar = ({
 }: Navbar1Props) => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+
   const dashboardMenu = session
     ? [{ title: "Dashboard", url: "/dashboard" }]
     : [];
@@ -137,6 +139,12 @@ const Navbar = ({
                   {/* 1. Standard Menu Items */}
                   {dashboardMenu.map((item) => renderMenuItem(item))}
                 </NavigationMenuList>
+
+                {session?.user.role === "STUDENT" && (
+                  <div className="ml-4">
+                    <BecomeTutorModal />
+                  </div>
+                )}
               </NavigationMenu>
             </div>
           </div>
@@ -163,9 +171,6 @@ const Navbar = ({
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {/* <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem> */}
                   <DropdownMenuItem
                     onClick={handleLogout}
                     className="text-destructive">
@@ -256,9 +261,6 @@ const Navbar = ({
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>My Account</DropdownMenuLabel>
                           <DropdownMenuSeparator />
-                          {/* <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem> */}
                           <DropdownMenuItem
                             onClick={handleLogout}
                             className="text-destructive">

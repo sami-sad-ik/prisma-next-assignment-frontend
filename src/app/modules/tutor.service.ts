@@ -19,4 +19,20 @@ const getAllTutors = async () => {
   return res.json();
 };
 
-export const tutorService = { getFeaturedTutors, getAllTutors };
+const getSpecificTutor = async (id: string) => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/tutors/${id}`, {
+      cache: "no-store",
+    });
+
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const tutorService = {
+  getFeaturedTutors,
+  getAllTutors,
+  getSpecificTutor,
+};
