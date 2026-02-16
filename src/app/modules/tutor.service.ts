@@ -1,6 +1,12 @@
 import { env } from "@/env";
 
-const BACKEND_URL = env.BACKEND_URL;
+interface tutorData {
+  bio: string;
+  hourlyRate: string;
+  categoryIds: string[];
+}
+
+const BACKEND_URL = env.NEXT_PUBLIC_BACKEND_URL;
 
 const getFeaturedTutors = async () => {
   const featuredTutors = await fetch(`${BACKEND_URL}/api/tutors/featured`, {
@@ -31,8 +37,22 @@ const getSpecificTutor = async (id: string) => {
   }
 };
 
+const becomeTutor = async (data: tutorData) => {
+  const response = await fetch(`${BACKEND_URL}/api/user/tutor`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  if (!result.success) throw new Error(result.message);
+};
+
 export const tutorService = {
   getFeaturedTutors,
   getAllTutors,
   getSpecificTutor,
+  becomeTutor,
 };

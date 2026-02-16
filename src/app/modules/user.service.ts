@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
-const backendUrl = env.BACKEND_URL;
+const backendUrl = env.NEXT_PUBLIC_BACKEND_URL;
 
 const getSession = async () => {
   try {
