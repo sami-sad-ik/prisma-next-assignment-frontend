@@ -1,5 +1,5 @@
 import { TutorCard } from "@/components/TutorCard";
-import { tutorService } from "../modules/tutor.service";
+import { getFeaturedTutors } from "../modules/tutor.service";
 
 export interface Tutor {
   id: string;
@@ -11,7 +11,7 @@ export interface Tutor {
 }
 
 export default async function Home() {
-  const featuredTutors = await tutorService.getFeaturedTutors();
+  const featuredTutors = await getFeaturedTutors();
 
   return (
     <div className="  font-sans dark:bg-black">

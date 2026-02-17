@@ -1,4 +1,4 @@
-import { tutorService } from "@/app/modules/tutor.service";
+import { getSpecificTutor } from "@/app/modules/tutor.service";
 import TutorDetails from "@/components/TutorDetails";
 
 const TutorDetailsPage = async ({
@@ -7,7 +7,7 @@ const TutorDetailsPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const { data: tutorData } = await tutorService.getSpecificTutor(id);
+  const { data: tutorData } = await getSpecificTutor(id);
 
   return (
     <div>

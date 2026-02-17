@@ -1,4 +1,4 @@
-import { tutorService } from "@/app/modules/tutor.service";
+import { getAllTutors } from "@/app/modules/tutor.service";
 import { TutorCard } from "@/components/TutorCard";
 
 export interface Tutor {
@@ -11,7 +11,7 @@ export interface Tutor {
 }
 
 const tutorPage = async () => {
-  const tutors = await tutorService.getAllTutors();
+  const tutors = await getAllTutors();
   return (
     <div>
       <div className="my-5">

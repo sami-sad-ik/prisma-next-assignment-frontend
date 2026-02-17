@@ -14,13 +14,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { tutorService } from "@/app/modules/tutor.service";
 import { Checkbox } from "./ui/checkbox";
+import { becomeTutor } from "@/app/modules/tutor.action";
 
 export const BecomeTutorModal = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export const BecomeTutorModal = () => {
     try {
       setLoading(true);
 
-      await tutorService.becomeTutor(tutorData);
+      await becomeTutor(tutorData);
 
       toast.success("You are a tutor now");
 

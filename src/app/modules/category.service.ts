@@ -14,4 +14,4 @@ const getCategories = async () => {
   }
 };
 
-export const categoryService = { getCategories };
+export { getCategories };

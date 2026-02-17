@@ -1,10 +1,5 @@
 import { env } from "@/env";
-
-interface tutorData {
-  bio: string;
-  hourlyRate: string;
-  categoryIds: string[];
-}
+import { cookies } from "next/headers";
 
 const BACKEND_URL = env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -37,22 +32,20 @@ const getSpecificTutor = async (id: string) => {
   }
 };
 
-const becomeTutor = async (data: tutorData) => {
-  const response = await fetch(`${BACKEND_URL}/api/user/tutor`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+const getMyTutorProfile = async () => {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${BACKEND_URL}/api/tutors/profile`, {
+      cache: "no-store",
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
 
-  const result = await response.json();
-
-  if (!result.success) throw new Error(result.message);
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export const tutorService = {
-  getFeaturedTutors,
-  getAllTutors,
-  getSpecificTutor,
-  becomeTutor,
-};
+export { getFeaturedTutors, getAllTutors, getSpecificTutor, getMyTutorProfile };
