@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <div className="  font-sans dark:bg-black">
-      <div className="my-5">
+      <div className="my-5 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
         {featuredTutors.data.map((tutor: Tutor) => (
           <TutorCard key={tutor.id} tutor={tutor} showFeaturedBadge={true} />
         ))}

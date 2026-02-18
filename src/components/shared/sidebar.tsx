@@ -18,12 +18,16 @@ interface navItem {
 
 const commonItems = [{ title: "Home", url: "/", icon: Home }];
 const adminItems = [
-  { title: "Users", url: "/users", icon: User },
-  { title: "All bookings", url: "/all-bookings", icon: BookIcon },
+  { title: "Users", url: "/dashboard/users", icon: User },
+  { title: "All bookings", url: "/dashboard/all-bookings", icon: BookIcon },
 ];
 const tutorItems = [
   { title: "Tutor profile", url: "/dashboard/profile", icon: User2 },
-  { title: "Set availability", url: "/set-availability", icon: Calendar },
+  {
+    title: "Set availability",
+    url: "/dashboard/set-availability",
+    icon: Calendar,
+  },
 ];
 const studentItems = [
   { title: "My bookings", url: "/my-bookings", icon: BookIcon },
