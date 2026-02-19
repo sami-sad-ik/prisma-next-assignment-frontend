@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Star,
   DollarSign,
@@ -9,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
 
 export default function TutorDetails({ data }: { data: any }) {
   const {
@@ -80,8 +82,8 @@ export default function TutorDetails({ data }: { data: any }) {
             </div>
 
             <div className="grid gap-4">
-              {reviews.length > 0 ? (
-                reviews.map((review: any) => (
+              {reviews?.length > 0 ? (
+                reviews?.map((review: any) => (
                   <Card key={review.id} className="bg-slate-50/50">
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-4">
@@ -138,13 +140,20 @@ export default function TutorDetails({ data }: { data: any }) {
                 <h4 className="font-semibold flex items-center gap-2">
                   <Calendar className="w-4 h-4" /> Availability
                 </h4>
-                {availability.length > 0 ? (
+                {availability?.length > 0 ? (
                   <ul className="text-sm space-y-2">
-                    {availability.map((a: any, i: number) => (
+                    {availability.map((slot: any) => (
                       <li
-                        key={i}
-                        className="bg-slate-50 p-2 rounded border text-center">
-                        {a}
+                        key={slot.id}
+                        className="bg-slate-50 p-2 rounded border text-center flex flex-col gap-1">
+                        <div className="font-medium">
+                          {format(new Date(slot.startTime), "dd MMM yyyy")} — (
+                          {format(new Date(slot.startTime), "HH:mm")} -{" "}
+                          {format(new Date(slot.endTime), "HH:mm")})
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {slot.isBooked ? "Booked" : "Available"}
+                        </div>
                       </li>
                     ))}
                   </ul>
