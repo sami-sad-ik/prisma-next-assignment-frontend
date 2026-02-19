@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { updateTutorProfile } from "@/app/modules/tutor.action";
+import { updateTutorProfile } from "@/app/modules/tutor.server";
 
 interface Category {
   id: string;

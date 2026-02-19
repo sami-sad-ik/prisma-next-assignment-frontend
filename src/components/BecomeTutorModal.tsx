@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "./ui/checkbox";
-import { becomeTutor } from "@/app/modules/tutor.action";
+import { becomeTutor } from "@/app/modules/tutor.server";
 
 export const BecomeTutorModal = () => {
   const router = useRouter();
