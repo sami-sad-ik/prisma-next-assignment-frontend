@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import {
   Star,
   DollarSign,
@@ -11,8 +12,16 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
+import { useState } from "react";
+import { bookSession } from "@/app/modules/booking.service";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-export default function TutorDetails({ data }: { data: any }) {
+const TutorDetails = ({ data }: { data: any }) => {
+  const router = useRouter();
+  const [selectedAvailabilityId, setSelectedAvailabilityId] = useState<
+    string | null
+  >(null);
   const {
     user,
     bio,
@@ -23,6 +32,23 @@ export default function TutorDetails({ data }: { data: any }) {
     totalReviews,
     availability,
   } = data;
+
+  const handleBookSession = async () => {
+    try {
+      if (!selectedAvailabilityId) {
+        alert("Please select a time slot first");
+        return;
+      }
+
+      await bookSession(selectedAvailabilityId);
+
+      toast.success("Session booked successfully!");
+
+      router.refresh();
+    } catch (error: any) {
+      alert(error.message || "Booking failed");
+    }
+  };
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-6xl">
@@ -140,22 +166,35 @@ export default function TutorDetails({ data }: { data: any }) {
                 <h4 className="font-semibold flex items-center gap-2">
                   <Calendar className="w-4 h-4" /> Availability
                 </h4>
-                {availability?.length > 0 ? (
+
+                {availability.length > 0 ? (
                   <ul className="text-sm space-y-2">
-                    {availability.map((slot: any) => (
-                      <li
-                        key={slot.id}
-                        className="bg-slate-50 p-2 rounded border text-center flex flex-col gap-1">
-                        <div className="font-medium">
-                          {format(new Date(slot.startTime), "dd MMM yyyy")} — (
-                          {format(new Date(slot.startTime), "HH:mm")} -{" "}
-                          {format(new Date(slot.endTime), "HH:mm")})
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {slot.isBooked ? "Booked" : "Available"}
-                        </div>
-                      </li>
-                    ))}
+                    {availability.map((slot: any) => {
+                      const isSelected = selectedAvailabilityId === slot.id;
+
+                      return (
+                        <li
+                          key={slot.id}
+                          onClick={() => {
+                            if (!slot.isBooked) {
+                              setSelectedAvailabilityId(slot.id);
+                            }
+                          }}
+                          className={`p-2 rounded border text-center flex flex-col gap-1 cursor-pointer transition
+          ${slot.isBooked ? "bg-gray-200 cursor-not-allowed opacity-60" : "bg-slate-50 hover:bg-primary/10"}
+          ${isSelected ? "border-primary bg-primary/15" : ""}`}>
+                          <div className="font-medium">
+                            {format(new Date(slot.startTime), "dd MMM yyyy")} —
+                            ({format(new Date(slot.startTime), "HH:mm")} -{" "}
+                            {format(new Date(slot.endTime), "HH:mm")})
+                          </div>
+
+                          <div className="text-xs text-muted-foreground">
+                            {slot.isBooked ? "Booked" : "Available"}
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
                 ) : (
                   <p className="text-sm text-muted-foreground bg-slate-50 p-3 rounded italic text-center">
@@ -164,7 +203,11 @@ export default function TutorDetails({ data }: { data: any }) {
                 )}
               </div>
 
-              <button className="w-full bg-primary text-primary-foreground py-3 rounded-md font-bold hover:opacity-90 transition-opacity">
+              <button
+                onClick={handleBookSession}
+                disabled={!selectedAvailabilityId}
+                className="w-full bg-primary text-primary-foreground py-3 rounded-md font-bold hover:opacity-90
+                 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
                 Book a Session
               </button>
             </CardContent>
@@ -173,4 +216,6 @@ export default function TutorDetails({ data }: { data: any }) {
       </div>
     </div>
   );
-}
+};
+
+export default TutorDetails;

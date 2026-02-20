@@ -1,4 +1,12 @@
-import { BookIcon, Calendar, Home, Star, User, User2 } from "lucide-react";
+import {
+  BookIcon,
+  Calendar,
+  Home,
+  Presentation,
+  Star,
+  User,
+  User2,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -32,6 +40,11 @@ const tutorItems = [
     title: "Review and Ratings",
     url: "/dashboard/review-rating",
     icon: Star,
+  },
+  {
+    title: "Sessions",
+    url: "/dashboard/sessions",
+    icon: Presentation,
   },
 ];
 const studentItems = [

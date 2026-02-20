@@ -8,7 +8,6 @@ const TutorDetailsPage = async ({
 }) => {
   const { id } = await params;
   const { data: tutorData } = await getSpecificTutor(id);
-  console.log(tutorData);
 
   return (
     <div>
